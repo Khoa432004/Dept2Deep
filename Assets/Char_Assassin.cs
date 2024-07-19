@@ -7,7 +7,6 @@ using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
-
 public class Char_Assassin : Player
 {
     // Start is called before the first frame update

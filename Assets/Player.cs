@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     public float MovementSpeed;
     public int Health;
+    public int Mana;
     public int Damage;
     public int Def;
     public int Crit;
     public int AttackSpeed;
     public int AttackRange;
     // Start is called before the first frame update
+    private Vector2 diadiem;
     void Start()
     {
 
@@ -20,28 +23,21 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void MoveChar(Rigidbody2D myRigidBody2D)
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            myRigidBody2D.position = new Vector3(myRigidBody2D.position.x, myRigidBody2D.position.y + MovementSpeed);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            myRigidBody2D.position = new Vector3(myRigidBody2D.position.x, myRigidBody2D.position.y - MovementSpeed);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        diadiem = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        if (diadiem.x < 0)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            myRigidBody2D.position = new Vector3(myRigidBody2D.position.x - MovementSpeed, myRigidBody2D.position.y);
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        else
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            myRigidBody2D.position = new Vector3(myRigidBody2D.position.x + MovementSpeed, myRigidBody2D.position.y);
         }
+        myRigidBody2D.velocity = diadiem * MovementSpeed;
     }
 }

@@ -27,5 +27,7 @@ public class SpawnTree : MonoBehaviour
 
         Vector3 newSpawn = new Vector3(x, y, 0);
         Instantiate(objectsToSpawn, newSpawn, transform.rotation);
+        //Add obstacle to pathfinding
+        objectsToSpawn.layer = LayerMask.NameToLayer("Obstacle");
     }
 }

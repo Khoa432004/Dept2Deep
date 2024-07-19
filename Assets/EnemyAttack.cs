@@ -23,27 +23,31 @@ public class EnemyAttack : MonoBehaviour //Chưa OOP
     {
 
     }
-    public void OnTriggerEnter2D(Collider2D obj)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (obj.CompareTag(tag))
+        if (collision.gameObject.CompareTag(tag))
         {
-            player = obj.GetComponent<Char_Assassin>();
-            if (enemy != null && enemy.AttackSpeed > 0)
+            player = collision.gameObject.GetComponent<Char_Assassin>();
+            if (player != null && enemy != null && enemy.AttackSpeed > 0)
             {
-                InvokeRepeating("Damage", 0, enemy.AttackSpeed);
+                InvokeRepeating(nameof(Damage), 0, enemy.AttackSpeed);
+            }
+            else
+            {
+                Debug.LogWarning("Player or enemy component is missing, or attack speed is invalid.");
             }
         }
         else
         {
-            Debug.LogWarning("Error");
+            Debug.LogWarning("Collided object is not the player.");
         }
     }
-    public void OnTriggerExit2D(Collider2D obj)
+    public void OnCollisionExit2D(Collision2D collision)
     {
-        if (obj.CompareTag(tag))
+        if (collision.gameObject.CompareTag(tag))
         {
             player = null;
-            CancelInvoke("Damage");
+            CancelInvoke(nameof(Damage));
         }
     }
     public void Damage()

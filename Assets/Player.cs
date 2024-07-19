@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float MovementSpeed;
+    public int MaxHP;
     public int Health;
     public int Mana;
     public int Damage;

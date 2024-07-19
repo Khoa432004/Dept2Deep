@@ -23,15 +23,14 @@ public class PlayerAttack : EnemyAttack
                 Damage();
         }
         else;
-            //UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
+        //UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
     }
-
-    public void OnTriggerEnter2D(Collider2D obj)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (obj.CompareTag(Tag))
+        if (collision.gameObject.CompareTag(Tag))
         {
-            Enemy = obj.GetComponent<Zombie_Script>();
-            if (Player != null && Player.AttackSpeed > 0 ) //icd
+            Enemy = collision.gameObject.GetComponent<Zombie_Script>();
+            if (Player != null && Player.AttackSpeed > 0) // Check for valid attack speed
             {
                 touch = true;
             }
@@ -39,6 +38,14 @@ public class PlayerAttack : EnemyAttack
         else
         {
             UnityEngine.Debug.LogWarning("Error");
+        }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(Tag))
+        {
+            touch = false;
         }
     }
 

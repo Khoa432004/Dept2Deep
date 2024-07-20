@@ -22,8 +22,8 @@ public class PlayerAttack : EnemyAttack
             if (Input.GetKeyDown(KeyCode.Space))
                 Damage();
         }
-        else;
-        //UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
+        else
+            UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {

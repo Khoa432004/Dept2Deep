@@ -6,16 +6,29 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float MovementSpeed;
-    public int MaxHP;
     public int Health;
+    public int CurrentHealth;
     public int Mana;
+    public int CurrentMana;
+    public int ManaConsumption;
     public int Damage;
     public int Def;
     public int Crit;
-    public int AttackSpeed;
+    public float AttackSpeed;
     public int AttackRange;
+    private Vector2 Diadiem;
+
+    //Roll
+    protected int BoostSpeed = 3;
+    protected float Cd = 0.5f;
+    float CurrentTime;
+    bool CheckRoll = false;
+
+    //HP
+    public HealthBar healthBar;
+    public HealthBar manaBar;
+
     // Start is called before the first frame update
-    private Vector2 diadiem;
     void Start()
     {
 
@@ -29,9 +42,9 @@ public class Player : MonoBehaviour
 
     public void MoveChar(Rigidbody2D myRigidBody2D)
     {
-        diadiem = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Diadiem = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        if (diadiem.x < 0)
+        if (Diadiem.x < 0)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
         }
@@ -39,6 +52,26 @@ public class Player : MonoBehaviour
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
         }
-        myRigidBody2D.velocity = diadiem * MovementSpeed;
+        myRigidBody2D.velocity = Diadiem * MovementSpeed;
+
+        Roll();
+    }
+    public void Roll()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftShift) && CurrentTime <= 0)
+        {
+            MovementSpeed += BoostSpeed;
+            CurrentTime = Cd;
+            CheckRoll = true;
+        }
+        else if(CurrentTime <= 0 && CheckRoll == true)
+        {
+            MovementSpeed -= BoostSpeed;
+            CheckRoll = false;
+        }
+        else
+        {
+            CurrentTime -= Time.deltaTime;
+        }
     }
 }

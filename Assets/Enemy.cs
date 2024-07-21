@@ -5,12 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float MovementSpeed;
-    public int MaxHP;
+    public int CurrentHealth;
     public int Health;
     public int Damage;
     public int Def;
     public int Crit;
-    public int AttackSpeed;
+    public float AttackSpeed;
     public int AttackRange;
     // Start is called before the first frame update
     void Start()

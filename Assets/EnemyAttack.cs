@@ -2,27 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class EnemyAttack : MonoBehaviour //Chưa OOP 
+public class EnemyAttack : MonoBehaviour
 {
     string tag = "Player";
     Char_Assassin player;
     Zombie_Script enemy;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        //CheckChar(player,enemy);
         player = GetComponent<Char_Assassin>();
         enemy = GetComponent<Zombie_Script>();
+        Update();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
+        if (player != null)
+        {
+            player.healthBar.UpdateBar(player.CurrentHealth, player.Health);
+            player.manaBar.UpdateBar(player.CurrentMana, player.Mana);
+        }
     }
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(tag))
@@ -52,7 +56,12 @@ public class EnemyAttack : MonoBehaviour //Chưa OOP
     }
     public void Damage()
     {
-        Debug.Log(tag+ " take " + CaculateDmg());
+        if(player.CurrentHealth <= 0)
+        {
+            Destroy(player);  
+        }
+        else
+        player.CurrentHealth -= CaculateDmg();
     }
     public int CaculateDmg()
     {
@@ -68,16 +77,16 @@ public class EnemyAttack : MonoBehaviour //Chưa OOP
     {
         if (player is Char_Assassin)
         {
-            player = GetComponent<Char_Assassin>();
             player = (Char_Assassin)player;
+            player = GetComponent<Char_Assassin>();
         }
     }
     public void CheckEnemy(Enemy enemy)
     {
         if (enemy is Char_Assassin)
         {
-            enemy = GetComponent<Zombie_Script>();
             enemy = (Zombie_Script)enemy;
+            enemy = GetComponent<Zombie_Script>();
         }
     }
 }

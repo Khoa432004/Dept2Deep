@@ -22,8 +22,8 @@ public class PlayerAttack : EnemyAttack
             if (Input.GetKeyDown(KeyCode.Space))
                 Damage();
         }
-        else
-            UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
+        //else
+        //    UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -51,7 +51,13 @@ public class PlayerAttack : EnemyAttack
 
     public void Damage()
     {
-        UnityEngine.Debug.Log(Tag + " take " + CaculateDmg());
+        if (Enemy.CurrentHealth <= 0)
+        {
+            Destroy(Enemy);
+        }
+        else
+            Enemy.CurrentHealth -= CaculateDmg();
+        Player.CurrentMana -= Player.ManaConsumption;
     }
     public int CaculateDmg()
     {

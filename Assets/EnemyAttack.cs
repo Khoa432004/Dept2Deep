@@ -15,7 +15,6 @@ public class EnemyAttack : MonoBehaviour
     {
         player = GetComponent<Char_Assassin>();
         enemy = GetComponent<Zombie_Script>();
-        Update();
     }
 
     private void Update()
@@ -50,24 +49,23 @@ public class EnemyAttack : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(tag))
         {
-            player = null;
             CancelInvoke(nameof(Damage));
+            player = null;
         }
     }
     public void Damage()
     {
-        if(player.CurrentHealth <= 0)
+        if (player == null || enemy == null) return;
+
+        if (player.CurrentHealth <= 0)
         {
-            Destroy(player);  
+            player.gameObject.SetActive(false);
         }
         else
-        player.CurrentHealth -= CaculateDmg();
+        {
+            player.CurrentHealth = Mathf.Max(0, player.CurrentHealth - (enemy.Damage - player.Def));
+        }
     }
-    public int CaculateDmg()
-    {
-        return enemy.Damage - player.Def;
-    }
-
     public void CheckChar(Player player, Enemy enemy)
     {
         CheckPlayer(player);

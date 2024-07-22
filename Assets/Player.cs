@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,7 +12,7 @@ public class Player : MonoBehaviour
     public int Def;
     public int Crit;
     public float AttackSpeed;
-    public int AttackRange;
+    public float AttackRange;
     private Vector2 Diadiem;
 
     //Roll
@@ -24,47 +21,54 @@ public class Player : MonoBehaviour
     float CurrentTime;
     bool CheckRoll = false;
 
+    public bool IsAlive = true;
+
     //HP
     public HealthBar healthBar;
     public HealthBar manaBar;
+    private Weapon equippedWeapon;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-
+        if (Health <= 0)
+        {
+            IsAlive = false;
+        }
+        else
+        {
+            IsAlive = true;
+        }
     }
 
     public void MoveChar(Rigidbody2D myRigidBody2D)
     {
-        Diadiem = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-        if (Diadiem.x < 0)
+        if (IsAlive)
         {
-            gameObject.GetComponent<SpriteRenderer>().flipX = false;
-        }
-        else
-        {
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
-        }
-        myRigidBody2D.velocity = Diadiem * MovementSpeed;
+            Diadiem = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        Roll();
+            if (Diadiem.x < 0)
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            }
+            myRigidBody2D.velocity = Diadiem * MovementSpeed;
+
+            Roll();
+        }
     }
+
     public void Roll()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift) && CurrentTime <= 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && CurrentTime <= 0)
         {
             MovementSpeed += BoostSpeed;
             CurrentTime = Cd;
             CheckRoll = true;
         }
-        else if(CurrentTime <= 0 && CheckRoll == true)
+        else if (CurrentTime <= 0 && CheckRoll == true)
         {
             MovementSpeed -= BoostSpeed;
             CheckRoll = false;
@@ -73,5 +77,56 @@ public class Player : MonoBehaviour
         {
             CurrentTime -= Time.deltaTime;
         }
+    }
+
+    public void IncreaseDamage(int amount)
+    {
+        Damage += amount;
+    }
+
+    public void IncreaseAttackRange(float amount)
+    {
+        AttackRange += amount;
+    }
+
+    public void IncreaseAttackSpeed(float amount)
+    {
+        AttackSpeed += amount;
+    }
+
+    public void DecreaseDamage(int amount)
+    {
+        Damage -= amount;
+    }
+
+    public void DecreaseAttackRange(float amount)
+    {
+        AttackRange -= amount;
+    }
+
+    public void DecreaseAttackSpeed(float amount)
+    {
+        AttackSpeed -= amount;
+    }
+
+    public void EquipWeapon(Weapon weapon)
+    {
+        if (equippedWeapon != null)
+        {
+            UnequipWeapon();
+        }
+        equippedWeapon = weapon;
+        weapon.Equip(this);
+        weapon.gameObject.SetActive(true);
+    }
+
+    public void UnequipWeapon()
+    {
+        if (equippedWeapon != null)
+        {
+            equippedWeapon.Unequip();
+            equippedWeapon = null;
+        }
+        equippedWeapon.gameObject.SetActive(false); // Vô hiệu hóa vũ khí
     }
 }

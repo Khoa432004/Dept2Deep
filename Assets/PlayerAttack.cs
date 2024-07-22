@@ -49,18 +49,20 @@ public class PlayerAttack : EnemyAttack
         }
     }
 
-    public void Damage()
+    private void Damage()
     {
+        if (Enemy == null) return;
+
         if (Enemy.CurrentHealth <= 0)
         {
-            Destroy(Enemy);
+            Destroy(Enemy.gameObject); // Hủy GameObject của enemy thay vì chỉ component
+            Enemy = null;
+            touch = false;
         }
         else
-            Enemy.CurrentHealth -= CaculateDmg();
-        Player.CurrentMana -= Player.ManaConsumption;
-    }
-    public int CaculateDmg()
-    {
-        return Player.Damage - Enemy.Def;
+        {
+            Enemy.CurrentHealth = Mathf.Max(0, Enemy.CurrentHealth - (Player.Damage - Enemy.Def));
+            Player.CurrentMana = Mathf.Max(0, Player.CurrentMana - Player.ManaConsumption);
+        }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerAttack : EnemyAttack
 {
-    string Tag = "Enemy";
+    new readonly string tag = "Enemy";
     Char_Assassin Player;
     Zombie_Script Enemy;
     bool touch = false;
@@ -25,9 +25,9 @@ public class PlayerAttack : EnemyAttack
         //else
         //    UnityEngine.Debug.LogWarning("Dont have enough AttackRange");
     }
-    public void OnCollisionEnter2D(Collision2D collision)
+    public new void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Tag))
+        if (collision.gameObject.CompareTag(tag))
         {
             Enemy = collision.gameObject.GetComponent<Zombie_Script>();
             if (Player != null && Player.AttackSpeed > 0) // Check for valid attack speed
@@ -41,15 +41,15 @@ public class PlayerAttack : EnemyAttack
         }
     }
 
-    public void OnCollisionExit2D(Collision2D collision)
+    public new void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Tag))
+        if (collision.gameObject.CompareTag(tag))
         {
             touch = false;
         }
     }
 
-    private void Damage()
+    private new void Damage()
     {
         if (Enemy == null) return;
 

@@ -7,14 +7,18 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyAttack : MonoBehaviour
 {
-    string tag = "Player";
+    new readonly string tag = "Player";
     Char_Assassin player;
     Zombie_Script enemy;
+    private GameObject LogicManager;
+    private LogicManager LogicManagerScript;
 
     private void Start()
     {
         player = GetComponent<Char_Assassin>();
         enemy = GetComponent<Zombie_Script>();
+        LogicManager = GameObject.FindGameObjectWithTag("LogicGame");
+        LogicManagerScript = LogicManager.GetComponent<LogicManager>();
     }
 
     private void Update()
@@ -57,13 +61,20 @@ public class EnemyAttack : MonoBehaviour
     {
         if (player == null || enemy == null) return;
 
-        if (player.CurrentHealth <= 0)
+        if (player.CurrentHealth < 0)
         {
             player.gameObject.SetActive(false);
+            LogicManagerScript.GameEnd();
         }
         else
         {
             player.CurrentHealth = Mathf.Max(0, player.CurrentHealth - (enemy.Damage - player.Def));
+            Update();
+            if (player.CurrentHealth == 0)
+            {
+                player.gameObject.SetActive(false);
+                LogicManagerScript.GameEnd();
+            }
         }
     }
     public void CheckChar(Player player, Enemy enemy)

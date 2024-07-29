@@ -22,15 +22,13 @@ public class Player : MonoBehaviour
     bool CheckRoll = false;
 
     public bool IsAlive = true;
-
     //HP
     public HealthBar healthBar;
     public HealthBar manaBar;
     private Weapon equippedWeapon;
-
     void Update()
     {
-        if (Health <= 0)
+        if (CurrentHealth <= 0)
         {
             IsAlive = false;
         }
